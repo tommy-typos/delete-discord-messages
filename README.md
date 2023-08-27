@@ -84,7 +84,7 @@ async function delete_50_messages(fetched_message_list) {
 
 function fakeDelay(seconds) {
 	return new Promise((resolve) => {
-		setTimeout(resolve, seconds);
+		setTimeout(resolve, seconds * 1000);
 	});
 }
 
