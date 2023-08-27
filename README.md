@@ -82,19 +82,19 @@ async function delete_50_messages(fetched_message_list) {
 	}
 }
 
-function fake_delay(amount) {
-	for (let i = 0; i < amount; i++) {
-		for (let i = 0; i < 999999999; i++) {}
-	}
+function fakeDelay(seconds) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, seconds);
+	});
 }
 
-function avoid_rate_limit(num) {
-	fake_delay(10);
-	if (num % 3 == 0) fake_delay(30);
-	if (num % 8 == 0) fake_delay(90);
-	if (num % 150 == 0) fake_delay(150);
-	if (num % 300 == 0) fake_delay(300);
-	if (num % 500 == 0) fake_delay(500);
+async function avoidRateLimit(num) {
+	await fakeDelay(10);
+	if (num % 3 == 0) await fakeDelay(20);
+	if (num % 8 == 0) await fakeDelay(60);
+	if (num % 150 == 0) await fakeDelay(90);
+	if (num % 300 == 0) await fakeDelay(180);
+	if (num % 500 == 0) await fakeDelay(300);
 }
 ```
 ### Step 4: Copy paste the following code into console in order to start deleting
@@ -103,7 +103,7 @@ let num = 1;
 
 // 500 means that the code will iterate through 500*50 messages and delete the ones you sent
 while (num <= 500) {
-	avoid_rate_limit(num);
+	await avoidRateLimit(num);
 
 	await fetch_and_delete_50(fetched_next_before_point, num);
 	num++;
